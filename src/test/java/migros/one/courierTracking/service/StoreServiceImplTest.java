@@ -32,8 +32,8 @@ class StoreServiceImplTest {
         // Arrange
         Long courierId = 1L;
         List<Object[]> mockResults = new ArrayList<>();
-        mockResults.add(new Object[]{"Ataşehir MMM Migros", 5L});
-        mockResults.add(new Object[]{"Kadıköy Migros", 3L});
+        mockResults.add(new Object[]{"Ataşehir MMM Migros", 5});
+        mockResults.add(new Object[]{"Kadıköy Migros", 3});
 
         when(visitLogRepository.findVisitCountsByCourierId(courierId)).thenReturn(mockResults);
 

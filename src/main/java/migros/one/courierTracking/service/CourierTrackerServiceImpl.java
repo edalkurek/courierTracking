@@ -132,7 +132,7 @@ public class CourierTrackerServiceImpl implements CourierTrackerService {
                 ? new DistanceInKilometers()
                 : new DistanceInMeters();
 
-        return courierRepository.findById(courierId)
+        return courierRepository.findByCourierId(courierId)
                 .map(courier -> {
                     double totalDistanceInMeters = courier.getTotalDistance();
                     log.info("Total travel distance for courier ID: {}: {} meters", courierId, totalDistanceInMeters);

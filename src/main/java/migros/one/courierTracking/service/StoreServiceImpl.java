@@ -99,8 +99,8 @@ public class StoreServiceImpl implements StoreService{
         Map<String, Integer> visitCounts = new HashMap<>();
         for (Object[] result : results) {
             String storeName = (String) result[0];
-            Long count = (Long) result[1];
-            visitCounts.put(storeName, count.intValue());
+            Integer visitCount = (Integer) result[1];
+            visitCounts.put(storeName, visitCount);
         }
 
         String message = visitCounts.isEmpty()
@@ -111,12 +111,18 @@ public class StoreServiceImpl implements StoreService{
     }
 
 
+
+    @Transactional
     public void logStoreVisit(Courier courier, Store store, LocalDateTime requestDate) {
-        VisitLog visitLog = VisitLog.builder()
-                .courier(courier)
-                .store(store)
-                .entryTime(requestDate)
-                .build();
+        VisitLog visitLog = visitLogRepository.findByCourierAndStore(courier, store)
+                .orElseGet(() -> VisitLog.builder()
+                        .courier(courier)
+                        .store(store)
+                        .visitCount(0)
+                        .build());
+
+        visitLog.setVisitCount(visitLog.getVisitCount() + 1);
+        visitLog.setEntryTime(requestDate);
         visitLogRepository.save(visitLog);
     }
 

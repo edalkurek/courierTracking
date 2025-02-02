@@ -37,7 +37,7 @@ class CourierTrackerServiceImplTest {
         courier.setCourierId(courierId);
         courier.setTotalDistance(1000.0); // 1000 meters
 
-        when(courierRepository.findById(courierId)).thenReturn(Optional.of(courier));
+        when(courierRepository.findByCourierId(courierId)).thenReturn(Optional.of(courier));
 
         TotalTravelDistanceResponse response = courierTrackerService.getTotalTravelDistance(courierId, unit);
 
@@ -47,7 +47,7 @@ class CourierTrackerServiceImplTest {
         assertEquals(1000.0, response.getTotalDistance());
         assertEquals("meters", response.getUnit());
 
-        verify(courierRepository, times(1)).findById(courierId);
+        verify(courierRepository, times(1)).findByCourierId(courierId);
     }
 
     @Test
@@ -59,7 +59,7 @@ class CourierTrackerServiceImplTest {
         courier.setCourierId(courierId);
         courier.setTotalDistance(1000.0); // 1000 meters
 
-        when(courierRepository.findById(courierId)).thenReturn(Optional.of(courier));
+        when(courierRepository.findByCourierId(courierId)).thenReturn(Optional.of(courier));
 
         TotalTravelDistanceResponse response = courierTrackerService.getTotalTravelDistance(courierId, unit);
 
@@ -69,7 +69,7 @@ class CourierTrackerServiceImplTest {
         assertEquals(1.0, response.getTotalDistance()); // 1000 meters = 1 kilometer
         assertEquals("kilometers", response.getUnit());
 
-        verify(courierRepository, times(1)).findById(courierId);
+        verify(courierRepository, times(1)).findByCourierId(courierId);
     }
 
     @Test
@@ -78,12 +78,12 @@ class CourierTrackerServiceImplTest {
         Long courierId = 1L;
         String unit = "meters";
 
-        when(courierRepository.findById(courierId)).thenReturn(Optional.empty());
+        when(courierRepository.findByCourierId(courierId)).thenReturn(Optional.empty());
 
         CourierNotFoundException exception = assertThrows(CourierNotFoundException.class,
                 () -> courierTrackerService.getTotalTravelDistance(courierId, unit));
 
-        assertEquals("Courier ID: 1 not found.", exception.getMessage());
-        verify(courierRepository, times(1)).findById(courierId);
+        assertEquals("Courier not found with ID: 1", exception.getMessage());
+        verify(courierRepository, times(1)).findByCourierId(courierId);
     }
 }

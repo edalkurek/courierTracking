@@ -25,5 +25,8 @@ public class VisitLog {
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
+    @Column(nullable = false)
+    private int visitCount;
+
     private LocalDateTime entryTime;
 }
